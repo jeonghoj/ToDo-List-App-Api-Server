@@ -17,7 +17,6 @@ export async function register(userId, password) {
 export async function login(req,res,next) {
     passport.authenticate('local', {session:false},(err,user) =>{
         if (err) {
-            console.log("here",err);
             return res.status(401).json({
             msg: "Check ID, Password Please"
         }) }
@@ -27,7 +26,6 @@ export async function login(req,res,next) {
         }) }
         req.logIn(user, (err) => {
             if (err) {
-                console.log(err);
                 return next(err);
             }
             const token = jwt.sign(user.toJSON(), config.secretKey);

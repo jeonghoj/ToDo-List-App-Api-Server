@@ -17,7 +17,7 @@ router.post('/',passport.authenticate('jwt',{session:false}), async (req,res) =>
     const userId = req.user.id;
     const task = req.body;
     const result = await taskService.createTask(userId, task);
-    res.json({
+    res.status(201).json({
         data:result,
         msg : "Created Successful"
     })
@@ -29,10 +29,18 @@ router.put('/:id',passport.authenticate('jwt',{session:false}), async (req,res) 
     const taskId = req.params.id;
     const task = req.body;
     const result = await taskService.modifyTask(userId, taskId, task);
-    res.json({
-        data:result,
-        msg : "Modify Successful"
-    })
+    if(result[0] === 1){
+        res.json({
+            data:result,
+            msg : "Modify Successful"
+        })
+    }else {
+        res.status(404).json({
+            data:result,
+            msg : "Not Found"
+        })
+    }
+
 });
 
 router.delete('/:id',passport.authenticate('jwt',{session:false}),async (req,res) => {
@@ -40,10 +48,17 @@ router.delete('/:id',passport.authenticate('jwt',{session:false}),async (req,res
     const userId = req.user.id;
     const taskId = req.params.id;
     const result = await taskService.deleteTask(userId, taskId);
-    res.json({
-        data:result,
-        msg : "Delete Successful"
-    })
+    if(result[0] === 1) {
+        res.json({
+            data: result,
+            msg: "Delete Successful"
+        })
+    }else {
+        res.status(404).json({
+            data:result,
+            msg : "Not Found"
+        })
+    }
 });
 
 module.exports = router;

@@ -23,7 +23,6 @@ module.exports = () => {
             if(!user){
                 return done(null, false);
             }else {
-                console.log("here?");
                 const isValidPassword = await user.validPassword(password);
                 if(isValidPassword){
                     return done(null, user);

@@ -5,14 +5,13 @@ import * as authService from '../services/authService';
 
 router.post('/register', async (req,res) => {
     const {userId, password} = req.body;
-    console.log(userId,password);
     const createdUser = await authService.register(userId, password);
     if(!createdUser){
-        res.json({
+        res.status(409).json({
             msg: "User already exist"
         })
     }else {
-        res.json({
+        res.status(201).json({
             data: {
                 id : createdUser.id
             },
